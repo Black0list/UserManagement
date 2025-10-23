@@ -1,13 +1,14 @@
+# Étape 1 : Build Maven
+FROM maven:3.8-openjdk-17 AS build
+WORKDIR /app
+COPY pom.xml .
+RUN mvn dependency:go-offline
+COPY src ./src
+RUN mvn package -DskipTests
+
+# Étape 2 : Tomcat + déploiement du WAR
 FROM tomcat:9.0-jdk17
-
-# Nettoyage des applications par défaut
 RUN rm -rf /usr/local/tomcat/webapps/*
-
-# Copier le WAR dans le dossier webapps de Tomcat
-COPY target/spring-user-mgt.war /usr/local/tomcat/webapps/ROOT.war
-
-# Exposer le port HTTP par défaut
+COPY --from=build /app/target/spring-user-mgt.war /usr/local/tomcat/webapps/ROOT.war
 EXPOSE 8080
-
-# Démarrage de Tomcat
 CMD ["catalina.sh", "run"]
