@@ -1,6 +1,7 @@
 package com.spring.config;
 
 import org.springframework.web.WebApplicationInitializer;
+import org.springframework.web.context.ContextLoaderListener;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
 import org.springframework.web.servlet.DispatcherServlet;
 
@@ -12,10 +13,17 @@ public class AppInitializer implements WebApplicationInitializer {
 
     @Override
     public void onStartup(ServletContext servletContext) throws ServletException {
-        AnnotationConfigWebApplicationContext context = new AnnotationConfigWebApplicationContext();
-        context.register(WebConfig.class);
+        // Root context: persistence + services
+        AnnotationConfigWebApplicationContext rootCtx = new AnnotationConfigWebApplicationContext();
+        rootCtx.register(PersistenceConfig.class);
+        servletContext.addListener(new ContextLoaderListener(rootCtx));
 
-        ServletRegistration.Dynamic dispatcher = servletContext.addServlet("dispatcher", new DispatcherServlet(context));
+        // Web/MVC context
+        AnnotationConfigWebApplicationContext webCtx = new AnnotationConfigWebApplicationContext();
+        webCtx.register(WebConfig.class);
+
+        ServletRegistration.Dynamic dispatcher =
+                servletContext.addServlet("dispatcher", new DispatcherServlet(webCtx));
         dispatcher.setLoadOnStartup(1);
         dispatcher.addMapping("/");
     }

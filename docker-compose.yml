@@ -15,6 +15,10 @@ services:
 
   tomcat:
     build: .
+    environment:
+      DB_URL: jdbc:postgresql://db:5432/userManagement
+      DB_USER: admin
+      DB_PASS: 123123
     container_name: spring-tomcat
     depends_on:
       - db
