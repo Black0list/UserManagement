@@ -2,6 +2,8 @@ package com.spring.dto;
 
 import com.spring.entity.Role;
 
+import java.time.LocalDateTime;
+
 
 public class UserResponseDTO {
     private Long id;
@@ -9,6 +11,7 @@ public class UserResponseDTO {
     private String email;
     private Role role;
     private Boolean active;
+    private LocalDateTime created_at;
 
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
@@ -20,6 +23,12 @@ public class UserResponseDTO {
     public void setRole(Role role) { this.role = role; }
     public Boolean getActive() { return active; }
     public void setActive(Boolean active) { this.active = active; }
+    public LocalDateTime getCreated_at() {
+        return created_at;
+    }
+    public void setCreated_at(LocalDateTime created_at) {
+        this.created_at = created_at;
+    }
 
     @Override
     public String toString() {
@@ -29,6 +38,7 @@ public class UserResponseDTO {
                 ", email='" + email + '\'' +
                 ", role=" + role +
                 ", active=" + active +
+                ", created_at= " + created_at +
                 '}';
     }
 }

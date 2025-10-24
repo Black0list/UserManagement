@@ -33,6 +33,7 @@ public class UserMapper {
         r.setEmail(u.getEmail());
         r.setRole(u.getRole());
         r.setActive(u.getActive());
+        r.setCreated_at(u.getCreatedAt());
         return r;
     }
 }
